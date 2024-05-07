@@ -27,11 +27,12 @@ const getPromise = (event) => {
     const promise = new Promise((fulfilled, rejected) => {
         if (promiseValue) {
             fulfilled(`✅ Fulfilled promise in ${delay}ms`);
+            iziToast.show({
+            message: `✅ Fulfilled promise in ${delay}ms`});
         } else {
             rejected(`❌ Rejected promise in ${delay}ms`);
             iziToast.error({
-                message: `❌ Rejected promise in ${delay}ms`,
-            });
+                message: `❌ Rejected promise in ${delay}ms`,});
         };
     });
     
