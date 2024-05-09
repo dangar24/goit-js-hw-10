@@ -1,3 +1,6 @@
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+
 const formEl = document.querySelector(".form");
 const timeInp = document.querySelector("input[name=delay]");
 const radioTrue = document.querySelector("input[value=fulfilled]");
@@ -26,20 +29,33 @@ radioFalse.addEventListener("click", itFalse)
 const getPromise = (event) => {
     const promise = new Promise((fulfilled, rejected) => {
         if (promiseValue) {
-            fulfilled(`✅ Fulfilled promise in ${delay}ms`);
-            iziToast.show({
-            message: `✅ Fulfilled promise in ${delay}ms`});
+            setTimeout(() => {
+                fulfilled(`✅ Fulfilled promise in ${delay}ms`);
+                iziToast.show({
+                    message: `✅ Fulfilled promise in ${delay}ms`,
+                    position: "topRight",
+                    backgroundColor: "#17ff00",
+                    progressBar: false,
+                    transitionIn: "fadeIn",
+                    close: false,});
+            }, delay);
+            
         } else {
-            rejected(`❌ Rejected promise in ${delay}ms`);
-            iziToast.error({
-                message: `❌ Rejected promise in ${delay}ms`,});
+            setTimeout(() => {
+                rejected(`❌ Rejected promise in ${delay}ms`);
+                iziToast.show({
+                    message: `❌ Rejected promise in ${delay}ms`,
+                    position: "topRight",
+                    backgroundColor: "#fa0000",
+                    progressBar: false,
+                    transitionIn: "fadeIn",
+                    close: false,});
+            }, delay);
         };
     });
     
     event.currentTarget.reset();
-    event.preventDefault();
-    console.log(delay);
-    
+    event.preventDefault();    
 };
 
 formEl.addEventListener("submit", getPromise);
