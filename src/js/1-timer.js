@@ -8,11 +8,10 @@ const startBtn = document.querySelector("button");
 startBtn.disabled = true;
 let userSelectedDate = null;
 let stopTime = null;
-let check = 1;
 const days = document.querySelector("span[data-days]");
-const hours = document.querySelector("span[data-hours]")
-const minutes = document.querySelector("span[data-minutes]")
-const seconds = document.querySelector("span[data-seconds]")
+const hours = document.querySelector("span[data-hours]");
+const minutes = document.querySelector("span[data-minutes]");
+const seconds = document.querySelector("span[data-seconds]");
 
 
 const options = {
@@ -46,26 +45,29 @@ const fp = flatpickr(dateInp, options);
 const timer = {
   start() {
     startBtn.disabled = true;
-    if (check > 0) {
-      const intervalId = setInterval(() => {
+    dateInp.disabled = true;
+    const intervalId = setInterval(() => {
       const startTime = Date.now();
       const deltaTime = userSelectedDate.getTime() - startTime;
-      const calculater = convertMs(deltaTime);
-      days.innerHTML = calculater.days;
-      hours.innerHTML = calculater.hours;
-      minutes.innerHTML = calculater.minutes;
-      seconds.innerHTML = calculater.seconds;
-      check = deltaTime;
-      console.log("intervalId ~ check:", check)
+      if (deltaTime > 1000) {
+        const calculater = convertMs(deltaTime);
+        days.innerHTML = calculater.days;
+        hours.innerHTML = calculater.hours;
+        minutes.innerHTML = calculater.minutes;
+        seconds.innerHTML = calculater.seconds;
+      } else {
+        clearInterval(intervalId);
+        days.innerHTML = "00";
+        hours.innerHTML = "00"
+        minutes.innerHTML = "00";
+        seconds.innerHTML = "00";
+        dateInp.disabled = false;
+        return;
+      };
     }, 1000);
-    } else {
-      clearInterval(intervalId);
-      check = 1;
-      return
-    }
   },
 
-}
+};
 
 startBtn.addEventListener("click", timer.start);
 
@@ -89,5 +91,5 @@ function convertMs(ms) {
 };
 
 function pad(value) {
-  return String(value).padStart(2,'0')
-}
+  return String(value).padStart(2, '0');
+};
